@@ -2,9 +2,7 @@
 import logging
 from time import sleep
 import ds18b20
-from datetime import datetime
 import requests
-import json
 
 # set the parameters for dweet
 url = "https://dweet.io/dweet/for/curtis-planter-box"
@@ -16,18 +14,12 @@ logging.warning("{} sensors identified".format(len(sensors)))
 # read sensors on loop
 while True:
 
-    # get the current datetime
-    now = datetime.now().strftime('%Y-%m-%d %H:%M')
-
-    # read the temperature sensor
-    temp = ds18b20.read_sensor(sensors['sensor3'])
-
-    # store the results as JSON
-    data = json.dumps({'temp': temp, 'datetime': now})
-    logging.warning(data)
+    # read the temperature sensors
+    temps = ds18b20.read_sensor(sensors)
+    logging.warning(temps)
 
     # send a message with the data
-    r = requests.get(url, params=data)
+    r = requests.get(url, params=temps)
 
     # check the status of the request
     if r.status_code == 200:
