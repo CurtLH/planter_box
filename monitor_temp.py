@@ -15,7 +15,7 @@ logging.warning("{} sensors identified".format(len(sensors)))
 while True:
 
     # read the temperature sensors
-    temps = ds18b20.read_sensor(sensors)
+    temps = ds18b20.read_multiple_sensors(sensors)
     logging.warning(temps)
 
     # send a message with the data
