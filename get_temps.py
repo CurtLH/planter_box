@@ -1,7 +1,8 @@
 #!/usr/bin/env python
+import logging
 import requests
 import psycopg2
-import logging
+import json
 from time import sleep
 
 # connect to the databse
@@ -17,9 +18,8 @@ logging.warning("Successfully connect to the database")
 # create table
 cur.execute("""CREATE TABLE IF NOT EXISTS temps
                (id SERIAL PRIMARY KEY NOT NULL,
-                received timestamp UNIQUE NOT NULL,
-                datetime timestamp,
-                temp numeric)""")
+                created timestamp UNIQUE NOT NULL,
+                temps jsonb)""")
 
 # get the latest dweet
 url = "https://dweet.io/get/latest/dweet/for/curtis-planter-box"
@@ -40,20 +40,12 @@ while True:
         # insert temps into database
         try:
             cur.execute("""INSERT INTO temps
-                           (received, datetime, temp)
-                           VALUES (%s, %s, %s)""", [data['created'], 
-                                                    data['content']['datetime'], 
-                                                    data['content']['temp']])
+                           (created, temps)
+                           VALUES (%s, %s)""", [data['created'], 
+                                                json.dumps(data['content'])])
             logging.warning("New record inserted into database")
         except:
             pass
             logging.warning("Duplicate record identified")
         
     sleep(30)
-
-
-# In[ ]:
-
-
-
-
