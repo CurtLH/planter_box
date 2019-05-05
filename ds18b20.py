@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 import os
 import glob
-from datetime import datetime
 
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -67,9 +66,6 @@ def read_multiple_sensors(sensors):
 
     # create an empty dict to add sensor readings to
     readings = {}
-
-    # add the current datetime to the reading
-    readings['datetime'] = datetime.now().strftime('%Y-%m-%d %H:%M')
 
     # get readings for all sensor files within sensors
     for sensor in sensors.keys():
