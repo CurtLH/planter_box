@@ -47,4 +47,4 @@ while True:
         logging.warning("Duplicate record identified")
 
     # wait then do it again
-    sleep(300)
+    sleep(30)

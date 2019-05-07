@@ -18,3 +18,15 @@ Add the following
 ```
 host	all	all	192.168.0.102/0	md5
 ```
+
+Start the sensors on reboot
+
+```
+$ crontab -e
+```
+
+Add the following:
+
+```
+@reboot /home/pi/planter-box/launch.sh >> /home/pi/log.txt 2>&1
+```
