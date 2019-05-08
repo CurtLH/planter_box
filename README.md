@@ -28,5 +28,5 @@ $ crontab -e
 Add the following:
 
 ```
-@reboot /home/pi/planter-box/launch.sh >> /home/pi/log.txt 2>&1
+@reboot /home/pi/planter-box/launch.sh
 ```

@@ -6,6 +6,13 @@ from datetime import datetime
 import json
 from time import sleep
 
+# enable logging
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(module)s - %(funcName)s: %(message)s',
+                    datefmt="%Y-%m-%d %H:%M:%S")
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
 # connect to the databse
 conn = psycopg2.connect(database="curtis",
                         user="curtis",
@@ -14,7 +21,7 @@ conn = psycopg2.connect(database="curtis",
 
 conn.autocommit = True
 cur = conn.cursor()
-logging.warning("Successfully connect to the database")
+logging.info("Successfully connect to the database")
 
 # create table
 cur.execute("""CREATE TABLE IF NOT EXISTS temps
@@ -24,7 +31,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS temps
 
 # get temp sensors
 sensors = ds18b20.get_sensors()
-logging.warning("{} sensors identified".format(len(sensors)))
+logging.info("{} sensors identified".format(len(sensors)))
 
 # read sensors on loop
 while True:
@@ -34,17 +41,17 @@ while True:
 
     # read the temperature sensors
     temps = ds18b20.read_multiple_sensors(sensors)
-    logging.warning(temps)
+    logging.info(temps)
 
     # insert temps into database
     try:
         cur.execute("""INSERT INTO temps
                         (datetime, sensors)
                         VALUES (%s, %s)""", [now, json.dumps(temps)])
-        logging.warning("New record inserted into database")
+        logging.info("New record inserted into database")
     except:
         pass
-        logging.warning("Duplicate record identified")
+        logging.info("Duplicate record identified")
 
     # wait then do it again
     sleep(30)
