@@ -22,7 +22,7 @@ host	all	all	192.168.0.102/0	md5
 Start the sensors on reboot
 
 ```
-$ crontab -e
+$ sudo crontab -e
 ```
 
 Add the following:
