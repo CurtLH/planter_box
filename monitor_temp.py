@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import logging
 import psycopg2
 import ds18b20
@@ -14,10 +15,10 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # connect to the databse
-conn = psycopg2.connect(database="curtis",
-                        user="curtis",
-                        password="apassword",
-                        host="192.168.0.110")
+conn = psycopg2.connect(database="temps",
+                        user=os.getenv("PSQL_USER"),
+                        password=os.getenv("PSQL_PASSWORD"),
+                        host=os.getenv("PSQL_HOST"))
 
 conn.autocommit = True
 cur = conn.cursor()
@@ -54,4 +55,4 @@ while True:
         logging.info("Duplicate record identified")
 
     # wait then do it again
-    sleep(30)
+    sleep(300)
